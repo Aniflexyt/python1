@@ -2,71 +2,137 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Estudiantes</title>
+    <title>Adivina el Número - Torneo</title>
+
     <style>
-        body { font-family: Arial; background: #f4f4f4; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 8px rgba(0,0,0,0.1); }
-        input { width: 95%; padding: 8px; margin: 5px 0 15px 0; }
-        button { padding: 10px; width: 100%; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        button:hover { background: #0056b3; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
-        th { background-color: #007bff; color: white; }
-        .alert { padding: 10px; background-color: #ffdddd; color: #d8000c; margin-bottom: 15px; border-radius: 5px; }
+        body {
+            background: #f4f4f4;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            padding: 40px 20px;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .card {
+            background: white;
+            padding: 25px 35px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 350px;
+            margin-bottom: 20px;
+        }
+        .table-card {
+            max-width: 600px;
+        }
+        input {
+            padding: 10px;
+            width: 90%;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .msg {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #007bff;
+            color: white;
+        }
+        .success-msg {
+            color: #28a745;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
+
 <body>
-<div class="container">
-    <h2>Registrar Nuevo Estudiante</h2>
+
+<div class="card">
+    <h2>Adivina el Número</h2>
     
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+    {% if mensaje %}
+    <p class="msg {% if 'exitosamente' in mensaje %}success-msg{% endif %}">{{ mensaje }}</p>
+    {% endif %}
 
-    <form action="/registrar" method="POST">
-        <label>Documento:</label>
-        <input type="text" name="documento" required>
-        
-        <label>Nombre Completo:</label>
-        <input type="text" name="nombre" required>
-        
-        <label>Correo Electrónico:</label>
-        <input type="email" name="correo" required>
-        
-        <label>Programa de Formación:</label>
-        <input type="text" name="programa" required>
-        
-        <label>Ficha:</label>
-        <input type="text" name="ficha" required>
-        
-        <button type="submit">Guardar Estudiante</button>
+    <form method="POST" action="/">
+        <input type="number" name="intento" placeholder="Ingresa un número (1-100)" required>
+        <button type="submit">Adivinar</button>
     </form>
+</div>
 
-    <h2>Estudiantes Registrados</h2>
+{% if session.get('puntaje_ganado', 0) > 0 %}
+<div class="card">
+    <h3 style="color: #28a745;">¡Lo lograste!</h3>
+    <p>Tu puntaje calculado es: <strong>{{ session.get('puntaje_ganado') }}</strong></p>
+    <form method="POST" action="/">
+        <input type="text" name="documento" placeholder="Documento" required>
+        <input type="text" name="nombre" placeholder="Nombre Completo" required>
+        <input type="email" name="correo" placeholder="Correo Electrónico" required>
+        <input type="text" name="programa" placeholder="Programa de formación" required>
+        <input type="text" name="ficha" placeholder="Ficha" required>
+        <button type="submit" style="background: #28a745;">Guardar en Base de Datos</button>
+    </form>
+</div>
+{% endif %}
+
+<div class="card table-card">
+    <h3>🏆 Salón de la Fama</h3>
     <table>
         <tr>
-            <th>Documento</th>
             <th>Nombre</th>
-            <th>Correo</th>
             <th>Programa</th>
             <th>Ficha</th>
+            <th>Puntaje</th>
         </tr>
-        {% for est in estudiantes %}
+        {% for j in jugadores %}
         <tr>
-            <td>{{ est[0] }}</td>
-            <td>{{ est[1] }}</td>
-            <td>{{ est[2] }}</td>
-            <td>{{ est[3] }}</td>
-            <td>{{ est[4] }}</td>
+            <td>{{ j[0] }}</td>
+            <td>{{ j[2] }}</td>
+            <td>{{ j[3] }}</td>
+            <td style="font-weight: bold; color: #007bff;">{{ j[1] }}</td>
         </tr>
         {% else %}
-        <tr><td colspan="5">No hay estudiantes registrados.</td></tr>
+        <tr>
+            <td colspan="4" style="text-align: center;">No hay jugadores registrados aún.</td>
+        </tr>
         {% endfor %}
     </table>
 </div>
+
 </body>
 </html>
