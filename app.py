@@ -1,12 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 import psycopg2
 from psycopg2 import OperationalError
 
 app = Flask(__name__)
-app.secret_key = "clave-super-secreta"
 
 DB_URL = "postgresql://torneo_dwdy_user:f3OpS5khsewskTq6FpdOA7cvG6tdWZp3@dpg-d8hmdbgjs32c73cr93eg-a.oregon-postgres.render.com/torneo_dwdy"
-
 
 def get_db_connection():
     return psycopg2.connect(DB_URL)
@@ -22,8 +20,6 @@ def index():
         correo = request.form["correo"]
         programa = request.form["programa"]
         ficha = request.form["ficha"]
-
-        # VALIDACIONES
 
         if not documento.isdigit():
             return render_template(
@@ -47,11 +43,8 @@ def index():
             cur.execute("""
                 INSERT INTO jugadores
                 (documento, nombre, correo, programa, ficha)
-
                 VALUES (%s, %s, %s, %s, %s)
-
-                ON CONFLICT (documento)
-                DO NOTHING;
+                ON CONFLICT (documento) DO NOTHING;
             """, (
                 documento,
                 nombre,
@@ -65,7 +58,7 @@ def index():
             cur.close()
             conn.close()
 
-            return redirect(url_for("menu"))
+            return render_template("registro_exitoso.html")
 
         except OperationalError as e:
 
@@ -84,11 +77,6 @@ def index():
             )
 
     return render_template("index.html")
-
-
-@app.route("/menu")
-def menu():
-    return render_template("menu.html")
 
 
 @app.route("/registrados")
@@ -120,19 +108,11 @@ def registrados():
             estudiantes=estudiantes
         )
 
-    except OperationalError as e:
-
-        return render_template(
-            "error.html",
-            mensaje_error="Error al consultar registros.",
-            detalle=str(e)
-        )
-
     except Exception as e:
 
         return render_template(
             "error.html",
-            mensaje_error="Error inesperado.",
+            mensaje_error="Error al consultar registros.",
             detalle=str(e)
         )
 
