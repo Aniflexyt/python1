@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import psycopg2
 from psycopg2 import OperationalError
 
@@ -113,6 +113,35 @@ def registrados():
         return render_template(
             "error.html",
             mensaje_error="Error al consultar registros.",
+            detalle=str(e)
+        )
+
+
+@app.route("/eliminar/<documento>")
+def eliminar(documento):
+
+    try:
+
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        cur.execute(
+            "DELETE FROM jugadores WHERE documento = %s",
+            (documento,)
+        )
+
+        conn.commit()
+
+        cur.close()
+        conn.close()
+
+        return redirect(url_for("registrados"))
+
+    except Exception as e:
+
+        return render_template(
+            "error.html",
+            mensaje_error="Error al eliminar registro.",
             detalle=str(e)
         )
 
