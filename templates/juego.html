@@ -2,90 +2,17 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>FIGHT NIGHT - ARCADE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>Blackjack - Mesa</title>
     <style>
-        body { margin: 0; background: #000; color: #fff; font-family: 'Press Start 2P', cursive; overflow: hidden; }
-        
-        /* Contenedor Fullscreen */
-        #arena { 
-            width: 100vw; height: 100vh; 
-            background: url('https://img.freepik.com/vector-premium/fondo-pixel-art-ring-boxeo_52683-85573.jpg') no-repeat center/cover;
-            display: flex; flex-direction: column; justify-content: space-between;
-        }
-
-        /* HUD - Barras de Vida */
-        .hud { display: flex; justify-content: space-between; padding: 20px; background: rgba(0,0,0,0.8); border-bottom: 4px solid #D4AF37; }
-        .bar-container { width: 300px; height: 30px; background: #333; border: 4px solid #fff; }
-        .bar-fill { height: 100%; width: 100%; background: #00ff00; transition: width 0.1s; }
-        
-        /* Luchadores */
-        #fight-container { flex: 1; display: flex; justify-content: space-around; align-items: flex-end; padding-bottom: 50px; }
-        .fighter { width: 300px; height: 400px; background-size: contain; background-repeat: no-repeat; transition: 0.1s; }
-        #player { background-image: url('https://i.imgur.com/k6lP4dC.png'); } /* Sustituye esta URL por tu imagen */
-        #enemy { background-image: url('https://i.imgur.com/3V5s24d.png'); transform: scaleX(-1); }
-
-        /* Controles */
-        #ui { text-align: center; padding: 20px; background: rgba(0,0,0,0.8); }
-        .btn-pelear { background: #D4AF37; padding: 20px 40px; border: 4px solid white; cursor: pointer; font-family: 'Press Start 2P'; font-size: 20px; }
-        .btn-pelear:active { background: #FFDF00; }
+        body { background: #0a0a0a; color: #d4af37; font-family: 'Courier New', monospace; text-align: center; padding: 50px; }
+        .hand { font-size: 3rem; margin: 20px; }
+        .btn-action { background: #000; border: 1px solid #d4af37; color: #d4af37; padding: 15px 30px; cursor: pointer; margin: 10px; }
     </style>
 </head>
 <body>
-
-<div id="arena">
-    <div class="hud">
-        <div><p>{{ nombre }}</p><div class="bar-container"><div id="p-hp" class="bar-fill"></div></div></div>
-        <div><h2 id="round-text">RONDA 1</h2></div>
-        <div><p>JEFE FINAL</p><div class="bar-container"><div id="e-hp" class="bar-fill"></div></div></div>
-    </div>
-    
-    <div id="fight-container">
-        <div id="player" class="fighter"></div>
-        <div id="enemy" class="fighter"></div>
-    </div>
-
-    <div id="ui">
-        <button class="btn-pelear" onclick="golpear()">¡GOLPEAR (ESPACIO)!</button>
-    </div>
-</div>
-
-<form id="end-form" method="POST" action="/juego" style="display:none;">
-    <input type="hidden" name="puntaje_final" id="score-field">
-</form>
-
-<script>
-    let pHP = 100, eHP = 100, round = 1;
-
-    // Pantalla completa al hacer clic
-    document.body.onclick = () => document.documentElement.requestFullscreen();
-
-    function golpear() {
-        eHP -= Math.floor(Math.random() * 10) + 5;
-        document.getElementById('e-hp').style.width = Math.max(0, eHP) + '%';
-        
-        if(eHP <= 0) {
-            round++;
-            eHP = 100 + (round * 10);
-            document.getElementById('e-hp').style.width = '100%';
-            document.getElementById('round-text').innerText = "RONDA " + round;
-            alert("¡Ronda " + round + "! El jefe se fortalece.");
-        }
-    }
-
-    // El enemigo ataca cada segundo
-    setInterval(() => {
-        pHP -= 5;
-        document.getElementById('p-hp').style.width = Math.max(0, pHP) + '%';
-        if(pHP <= 0) {
-            alert("¡GAME OVER!");
-            document.getElementById('score-field').value = round * 500;
-            document.getElementById('end-form').submit();
-        }
-    }, 1000);
-
-    // Tecla Espacio
-    document.addEventListener('keydown', (e) => { if(e.code === 'Space') golpear(); });
-</script>
+    <h1>Tus Cartas: {{ mano }}</h1>
+    <div class="hand">Total: {{ valor }}</div>
+    <a href="/hit"><button class="btn-action">PEDIR (HIT)</button></a>
+    <a href="/stand"><button class="btn-action">PLANTARSE (STAND)</button></a>
 </body>
 </html>
