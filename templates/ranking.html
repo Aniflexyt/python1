@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { background: #0a0a0a; color: #d4af37; font-family: 'Courier New', monospace; padding: 50px; }
+        table { width: 100%; max-width: 600px; margin: auto; border: 1px solid #d4af37; }
+        th, td { padding: 15px; border-bottom: 1px solid #333; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">SALÓN DE LA FAMA</h1>
+    <table>
+        <tr><th>Nombre</th><th>Puntaje</th></tr>
+        {% for r in ranking %}
+        <tr><td>{{ r[0] }}</td><td>{{ r[1] }}</td></tr>
+        {% endfor %}
+    </table>
+    <div style="text-align: center; margin-top: 20px;"><a href="/" style="color: #d4af37;">Jugar de nuevo</a></div>
+</body>
+</html>
