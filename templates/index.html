@@ -2,83 +2,71 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Adivina el Número</title>
-
+    <title>Gestión de Estudiantes</title>
     <style>
-        body {
-            background: #f4f4f4;
-            font-family: Arial;
-            display: flex;
-            height: 100vh;
-            justify-content: center;
-            align-items: center;
-        }
-        .card {
-            background: white;
-            padding: 25px 35px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 8px rgba(0,0,0,0.2);
-            text-align: center;
-            width: 300px;
-        }
-        input {
-            padding: 8px;
-            width: 90%;
-            margin-top: 10px;
-            margin-bottom: 15px;
-        }
-        button {
-            padding: 10px;
-            width: 100%;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        .button {
-            padding: 10px;
-            width: 100%;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        .button:hover {
-            background: #0056b3;
-        }
-        a{
-            text-decoration:none;
-            font-family: Arial;
-        }
-        .msg {
-            margin-top: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-        }
+        body { font-family: Arial; background: #f4f4f4; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 8px rgba(0,0,0,0.1); }
+        input { width: 95%; padding: 8px; margin: 5px 0 15px 0; }
+        button { padding: 10px; width: 100%; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        .alert { padding: 10px; background-color: #ffdddd; color: #d8000c; margin-bottom: 15px; border-radius: 5px; }
     </style>
 </head>
-
 <body>
-<div class="card">
-    <h2>Adivina el número</h2>
-    <p>Estoy pensando un número entre 1 y 100</p>
+<div class="container">
+    <h2>Registrar Nuevo Estudiante</h2>
+    
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
-    <form method="POST">
-        <input type="number" name="intento" placeholder="Ingresa un número" required>
-        <button type="submit">Probar</button>
+    <form action="/registrar" method="POST">
+        <label>Documento:</label>
+        <input type="text" name="documento" required>
+        
+        <label>Nombre Completo:</label>
+        <input type="text" name="nombre" required>
+        
+        <label>Correo Electrónico:</label>
+        <input type="email" name="correo" required>
+        
+        <label>Programa de Formación:</label>
+        <input type="text" name="programa" required>
+        
+        <label>Ficha:</label>
+        <input type="text" name="ficha" required>
+        
+        <button type="submit">Guardar Estudiante</button>
     </form>
 
-    {% if mensaje %}
-    <p class="msg">{{ mensaje }}</p>
-    {% endif %}
-    <br>
+    <h2>Estudiantes Registrados</h2>
+    <table>
+        <tr>
+            <th>Documento</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Programa</th>
+            <th>Ficha</th>
+        </tr>
+        {% for est in estudiantes %}
+        <tr>
+            <td>{{ est[0] }}</td>
+            <td>{{ est[1] }}</td>
+            <td>{{ est[2] }}</td>
+            <td>{{ est[3] }}</td>
+            <td>{{ est[4] }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5">No hay estudiantes registrados.</td></tr>
+        {% endfor %}
+    </table>
 </div>
 </body>
-
 </html>
