@@ -17,12 +17,41 @@ body{
 h1{
     text-align:center;
     color:#FFD700;
+    margin-bottom:20px;
+}
+
+.controles{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+input[type="text"]{
+    padding:10px;
+    width:300px;
+    border:none;
+    border-radius:5px;
+}
+
+button{
+    padding:10px 15px;
+    border:none;
+    border-radius:5px;
+    background:#FFD700;
+    color:black;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
 }
 
 table{
     width:100%;
     border-collapse:collapse;
-    margin-top:20px;
 }
 
 th{
@@ -45,7 +74,7 @@ tr:hover{
     background:#222;
 }
 
-.btn{
+.btn-volver{
     display:inline-block;
     margin-top:20px;
     padding:12px 20px;
@@ -56,21 +85,54 @@ tr:hover{
     font-weight:bold;
 }
 
+.btn-borrar{
+    background:#d62828;
+    color:white;
+    text-decoration:none;
+    padding:8px 12px;
+    border-radius:5px;
+    font-size:14px;
+}
+
+.btn-borrar:hover{
+    background:#a4161a;
+}
+
 </style>
 </head>
+
 <body>
 
-<h1>Estudiantes Registrados</h1>
+<h1>📋 Estudiantes Registrados</h1>
 
-<table>
+<div class="controles">
 
-    <tr>
-        <th>Documento</th>
-        <th>Nombre</th>
-        <th>Correo</th>
-        <th>Programa</th>
-        <th>Ficha</th>
-    </tr>
+    <input
+        type="text"
+        id="buscador"
+        placeholder="Buscar estudiante..."
+        onkeyup="filtrarTabla()">
+
+    <button onclick="ordenarTabla()">
+        Ordenar A-Z
+    </button>
+
+</div>
+
+<table id="tablaEstudiantes">
+
+    <thead>
+        <tr>
+            <th>Documento</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Programa</th>
+            <th>Ficha</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+
+    <tbody>
 
     {% for estudiante in estudiantes %}
 
@@ -80,15 +142,69 @@ tr:hover{
         <td>{{ estudiante[2] }}</td>
         <td>{{ estudiante[3] }}</td>
         <td>{{ estudiante[4] }}</td>
+
+        <td>
+            <a
+                class="btn-borrar"
+                href="/eliminar/{{ estudiante[0] }}"
+                onclick="return confirm('¿Desea eliminar este registro?')">
+                🗑 Eliminar
+            </a>
+        </td>
     </tr>
 
     {% endfor %}
 
+    </tbody>
+
 </table>
 
-<a href="/" class="btn">
+<a href="/" class="btn-volver">
     ⬅ Volver al Inicio
 </a>
+
+<script>
+
+function filtrarTabla() {
+
+    let input = document.getElementById("buscador");
+    let filtro = input.value.toLowerCase();
+
+    let tabla = document.getElementById("tablaEstudiantes");
+    let filas = tabla.getElementsByTagName("tr");
+
+    for(let i = 1; i < filas.length; i++){
+
+        let textoFila = filas[i].textContent.toLowerCase();
+
+        if(textoFila.indexOf(filtro) > -1){
+            filas[i].style.display = "";
+        }else{
+            filas[i].style.display = "none";
+        }
+    }
+}
+
+function ordenarTabla() {
+
+    let tabla = document.getElementById("tablaEstudiantes");
+    let tbody = tabla.querySelector("tbody");
+
+    let filas = Array.from(tbody.querySelectorAll("tr"));
+
+    filas.sort(function(a,b){
+
+        let nombreA = a.cells[1].innerText.toLowerCase();
+        let nombreB = b.cells[1].innerText.toLowerCase();
+
+        return nombreA.localeCompare(nombreB);
+
+    });
+
+    filas.forEach(fila => tbody.appendChild(fila));
+}
+
+</script>
 
 </body>
 </html>
