@@ -2,159 +2,90 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Fight Night - En el Ring</title>
+    <title>FIGHT NIGHT - ARCADE</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; background: #050505; color: white; font-family: 'Press Start 2P', cursive; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        body { margin: 0; background: #000; color: #fff; font-family: 'Press Start 2P', cursive; overflow: hidden; }
         
-        /* Escenario de la pelea */
-        #arena { width: 900px; height: 500px; background: url('https://img.freepik.com/free-vector/pixel-art-boxing-ring-background_52683-85573.jpg') no-repeat center/cover; position: relative; border: 4px solid #D4AF37; box-shadow: 0 0 30px rgba(212, 175, 55, 0.5); overflow: hidden; }
+        /* Contenedor Fullscreen */
+        #arena { 
+            width: 100vw; height: 100vh; 
+            background: url('https://img.freepik.com/vector-premium/fondo-pixel-art-ring-boxeo_52683-85573.jpg') no-repeat center/cover;
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+
+        /* HUD - Barras de Vida */
+        .hud { display: flex; justify-content: space-between; padding: 20px; background: rgba(0,0,0,0.8); border-bottom: 4px solid #D4AF37; }
+        .bar-container { width: 300px; height: 30px; background: #333; border: 4px solid #fff; }
+        .bar-fill { height: 100%; width: 100%; background: #00ff00; transition: width 0.1s; }
         
-        /* Interfaz de barras de vida */
-        .hud { display: flex; justify-content: space-between; padding: 15px 20px; background: rgba(0,0,0,0.8); border-bottom: 3px solid #D4AF37; }
-        .health-box { width: 40%; }
-        .health-bar-bg { background: #8b0000; height: 25px; width: 100%; border: 3px solid white; margin-top: 10px; }
-        .health-bar-fill { background: #39ff14; height: 100%; width: 100%; transition: width 0.1s; box-shadow: inset 0 0 10px rgba(255,255,255,0.5); }
-        
-        /* Personajes */
-        .character { position: absolute; bottom: 30px; width: 250px; height: 350px; background-size: contain; background-repeat: no-repeat; background-position: bottom; transition: transform 0.05s; filter: drop-shadow(0px 10px 10px rgba(0,0,0,0.8)); }
-        
-        /* -------- AQUÍ PONES LA IMAGEN DE TU PERSONAJE -------- */
-        #player { left: 50px; background-image: url('URL_DE_TU_IMAGEN_CHICA_BOXEADORA'); }
-        
-        /* Enemigo por defecto */
-        #enemy { right: 50px; transform: scaleX(-1); background-image: url('https://i.imgur.com/3V5s24d.png'); }
-        
-        /* Animaciones de golpes */
-        .punching { transform: translateX(50px) rotate(10deg); }
-        .enemy-punching { transform: scaleX(-1) translateX(50px) rotate(-10deg); }
-        .hit { filter: brightness(0.5) sepia(1) hue-rotate(-50deg) saturate(5); }
-        
-        /* Controles y Pantalla Final */
-        #controls { position: absolute; bottom: 20px; width: 100%; text-align: center; }
-        .btn-pelear { background: #D4AF37; color: black; font-family: 'Press Start 2P', cursive; padding: 15px 30px; border: 4px solid white; cursor: pointer; font-size: 16px; border-radius: 5px; text-transform: uppercase; }
-        .btn-pelear:active { background: white; transform: scale(0.95); }
-        
-        #game-over { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); flex-direction: column; justify-content: center; align-items: center; z-index: 10; text-align: center; }
-        .game-over-text { color: #FFDF00; text-shadow: 4px 4px 0px #8b0000; line-height: 1.5; }
+        /* Luchadores */
+        #fight-container { flex: 1; display: flex; justify-content: space-around; align-items: flex-end; padding-bottom: 50px; }
+        .fighter { width: 300px; height: 400px; background-size: contain; background-repeat: no-repeat; transition: 0.1s; }
+        #player { background-image: url('https://i.imgur.com/k6lP4dC.png'); } /* Sustituye esta URL por tu imagen */
+        #enemy { background-image: url('https://i.imgur.com/3V5s24d.png'); transform: scaleX(-1); }
+
+        /* Controles */
+        #ui { text-align: center; padding: 20px; background: rgba(0,0,0,0.8); }
+        .btn-pelear { background: #D4AF37; padding: 20px 40px; border: 4px solid white; cursor: pointer; font-family: 'Press Start 2P'; font-size: 20px; }
+        .btn-pelear:active { background: #FFDF00; }
     </style>
 </head>
 <body>
 
 <div id="arena">
     <div class="hud">
-        <div class="health-box">
-            <div style="color: #00ffff;">{{ nombre }}</div>
-            <div class="health-bar-bg"><div id="player-health" class="health-bar-fill"></div></div>
-        </div>
-        <div style="font-size: 30px; color: #FFDF00; text-shadow: 2px 2px #000;">VS</div>
-        <div class="health-box" style="text-align: right;">
-            <div style="color: #ff0040;">EL CAMPEÓN</div>
-            <div class="health-bar-bg"><div id="enemy-health" class="health-bar-fill"></div></div>
-        </div>
+        <div><p>{{ nombre }}</p><div class="bar-container"><div id="p-hp" class="bar-fill"></div></div></div>
+        <div><h2 id="round-text">RONDA 1</h2></div>
+        <div><p>JEFE FINAL</p><div class="bar-container"><div id="e-hp" class="bar-fill"></div></div></div>
+    </div>
+    
+    <div id="fight-container">
+        <div id="player" class="fighter"></div>
+        <div id="enemy" class="fighter"></div>
     </div>
 
-    <div id="player" class="character"></div>
-    <div id="enemy" class="character"></div>
-
-    <div id="game-over">
-        <h1 id="result-text" class="game-over-text"></h1>
-        <form method="POST" action="/juego">
-            <input type="hidden" name="puntaje_final" id="puntaje_final_input" value="0">
-            <button type="submit" class="btn-pelear" style="margin-top: 30px;">Guardar Récord</button>
-        </form>
-    </div>
-
-    <div id="controls">
-        <button class="btn-pelear" onclick="ataqueJugador()">🤜 GOLPEAR (ESPACIO) 🤛</button>
+    <div id="ui">
+        <button class="btn-pelear" onclick="golpear()">¡GOLPEAR (ESPACIO)!</button>
     </div>
 </div>
 
+<form id="end-form" method="POST" action="/juego" style="display:none;">
+    <input type="hidden" name="puntaje_final" id="score-field">
+</form>
+
 <script>
-    let playerHp = 100;
-    let enemyHp = 100;
-    let gameActive = true;
+    let pHP = 100, eHP = 100, round = 1;
 
-    // Detectar cuando el usuario presiona la barra espaciadora
-    document.addEventListener('keydown', function(event) {
-        if (event.code === 'Space' && gameActive) {
-            event.preventDefault(); // Evita que la pantalla baje
-            ataqueJugador();
-        }
-    });
+    // Pantalla completa al hacer clic
+    document.body.onclick = () => document.documentElement.requestFullscreen();
 
-    function ataqueJugador() {
-        if(!gameActive) return;
+    function golpear() {
+        eHP -= Math.floor(Math.random() * 10) + 5;
+        document.getElementById('e-hp').style.width = Math.max(0, eHP) + '%';
         
-        // 1. Animación del jugador atacando
-        const playerEl = document.getElementById('player');
-        const enemyEl = document.getElementById('enemy');
-        playerEl.classList.add('punching');
-        enemyEl.classList.add('hit');
-        
-        setTimeout(() => {
-            playerEl.classList.remove('punching');
-            enemyEl.classList.remove('hit');
-        }, 100);
-
-        // 2. Bajar vida del enemigo (Golpes aleatorios entre 5 y 12 de daño)
-        enemyHp -= Math.floor(Math.random() * 8) + 5; 
-        if(enemyHp <= 0) enemyHp = 0;
-        document.getElementById('enemy-health').style.width = enemyHp + '%';
-
-        verificarFin();
-    }
-
-    // IA del Enemigo: Ataca automáticamente cada medio segundo
-    let enemyAttackInterval = setInterval(() => {
-        if(!gameActive) return;
-        
-        const enemyEl = document.getElementById('enemy');
-        const playerEl = document.getElementById('player');
-        
-        enemyEl.classList.add('enemy-punching');
-        playerEl.classList.add('hit');
-        
-        setTimeout(() => {
-            enemyEl.classList.remove('enemy-punching');
-            playerEl.classList.remove('hit');
-        }, 100);
-
-        // El enemigo hace daño entre 3 y 10
-        playerHp -= Math.floor(Math.random() * 8) + 3; 
-        if(playerHp <= 0) playerHp = 0;
-        document.getElementById('player-health').style.width = playerHp + '%';
-
-        verificarFin();
-    }, 500); 
-
-    function verificarFin() {
-        if (playerHp <= 0 || enemyHp <= 0) {
-            gameActive = false;
-            clearInterval(enemyAttackInterval); // Detener al enemigo
-            
-            let puntaje = 0;
-            let mensaje = "";
-
-            if(playerHp > 0) {
-                mensaje = "¡K.O.!\nERES EL NUEVO CAMPEÓN";
-                // Cálculo de puntaje: base + bono por la vida que te sobró
-                puntaje = 1000 + (playerHp * 20); 
-            } else {
-                mensaje = "¡NOCAUT TÉCNICO!\nHAS CAÍDO";
-                puntaje = 100; // Premio de consolación
-            }
-
-            // Mostrar resultados y preparar envío a Flask
-            document.getElementById('result-text').innerText = mensaje + "\nPUNTAJE FINAL: " + puntaje;
-            document.getElementById('puntaje_final_input').value = puntaje;
-            
-            setTimeout(() => {
-                document.getElementById('game-over').style.display = 'flex';
-                document.getElementById('controls').style.display = 'none';
-            }, 500);
+        if(eHP <= 0) {
+            round++;
+            eHP = 100 + (round * 10);
+            document.getElementById('e-hp').style.width = '100%';
+            document.getElementById('round-text').innerText = "RONDA " + round;
+            alert("¡Ronda " + round + "! El jefe se fortalece.");
         }
     }
+
+    // El enemigo ataca cada segundo
+    setInterval(() => {
+        pHP -= 5;
+        document.getElementById('p-hp').style.width = Math.max(0, pHP) + '%';
+        if(pHP <= 0) {
+            alert("¡GAME OVER!");
+            document.getElementById('score-field').value = round * 500;
+            document.getElementById('end-form').submit();
+        }
+    }, 1000);
+
+    // Tecla Espacio
+    document.addEventListener('keydown', (e) => { if(e.code === 'Space') golpear(); });
 </script>
 </body>
 </html>
