@@ -2,137 +2,220 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Adivina el Número - Torneo</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torneo de Boxeo - Registro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;0,900&display=swap" rel="stylesheet">
     <style>
+        /* --- ESTILOS GENERALES --- */
         body {
-            background: #f4f4f4;
-            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #050505; /* Negro profundo */
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            font-family: 'Montserrat', sans-serif;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .master-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(20, 20, 20, 0.8);
+            border: 2px solid #D4AF37; /* Dorado */
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3), inset 0 0 20px rgba(0,0,0,0.8);
+            overflow: hidden;
+        }
+
+        /* --- COLUMNA IZQUIERDA (FORMULARIO) --- */
+        .form-section {
+            flex: 1;
+            min-width: 350px;
+            padding: 50px 40px;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            align-items: center;
-            padding: 40px 20px;
-            margin: 0;
-            box-sizing: border-box;
+            justify-content: center;
         }
-        .card {
-            background: white;
-            padding: 25px 35px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-            text-align: center;
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #D4AF37;
+            text-shadow: 2px 2px 4px #000, 0 0 15px rgba(212, 175, 55, 0.5);
+            margin-top: 0;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #aaaaaa;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .form-group input {
             width: 100%;
-            max-width: 350px;
-            margin-bottom: 20px;
-        }
-        .table-card {
-            max-width: 600px;
-        }
-        input {
-            padding: 10px;
-            width: 90%;
-            margin-top: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-        button {
-            padding: 10px;
-            width: 100%;
-            background: #007bff;
-            color: white;
+            padding: 12px 10px;
+            background: transparent;
             border: none;
-            border-radius: 8px;
+            border-bottom: 2px solid #555;
+            color: #fff;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-bottom: 2px solid #FFDF00; /* Dorado brillante al enfocar */
+            box-shadow: 0 5px 5px -5px rgba(255, 223, 0, 0.5);
+        }
+
+        .form-group label {
+            position: absolute;
+            top: 12px;
+            left: 10px;
+            color: #888;
+            font-size: 1rem;
+            pointer-events: none;
+            transition: 0.3s ease all;
+        }
+
+        /* Animación del label cuando se escribe o se enfoca */
+        .form-group input:focus ~ label,
+        .form-group input:valid ~ label {
+            top: -15px;
+            left: 0;
+            font-size: 0.8rem;
+            color: #D4AF37;
+            font-weight: bold;
+        }
+
+        .btn-gloria {
+            background: linear-gradient(45deg, #B8860B, #FFDF00, #B8860B);
+            background-size: 200% auto;
+            color: #000;
+            font-weight: 900;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        .msg {
+            transition: 0.5s;
             margin-top: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
+            box-shadow: 0 0 15px rgba(255, 223, 0, 0.4);
         }
-        table {
+
+        .btn-gloria:hover {
+            background-position: right center;
+            box-shadow: 0 0 25px rgba(255, 223, 0, 0.8);
+            transform: scale(1.02);
+        }
+
+        /* --- COLUMNA DERECHA (VIDEO) --- */
+        .video-section {
+            flex: 1;
+            min-width: 350px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-left: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .video-container {
             width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            margin-top: 15px;
+            height: 100%;
+            min-height: 400px; /* Asegura que el video tenga buen tamaño */
         }
-        th, td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
-        th {
-            background: #007bff;
-            color: white;
-        }
-        .success-msg {
-            color: #28a745;
-            font-weight: bold;
-            margin-bottom: 15px;
+
+        /* Ajustes para celulares */
+        @media (max-width: 768px) {
+            .master-container {
+                flex-direction: column;
+                margin: 20px 0;
+            }
+            .video-section {
+                border-left: none;
+                border-top: 2px solid rgba(212, 175, 55, 0.3);
+                height: 300px;
+                min-height: auto;
+            }
         }
     </style>
 </head>
-
 <body>
 
-<div class="card">
-    <h2>Adivina el Número</h2>
-    
-    {% if mensaje %}
-    <p class="msg {% if 'exitosamente' in mensaje %}success-msg{% endif %}">{{ mensaje }}</p>
-    {% endif %}
+    <div class="master-container">
+        
+        <div class="form-section">
+            <h1 class="header-title">FIGHT NIGHT</h1>
+            <p class="subtitle">Registra tus datos antes de subir al ring</p>
 
-    <form method="POST" action="/">
-        <input type="number" name="intento" placeholder="Ingresa un número (1-100)" required>
-        <button type="submit">Adivinar</button>
-    </form>
-</div>
+            <form action="/juego" method="POST">
+                <div class="form-group">
+                    <input type="text" name="documento" required autocomplete="off">
+                    <label>Documento</label>
+                </div>
 
-{% if session.get('puntaje_ganado', 0) > 0 %}
-<div class="card">
-    <h3 style="color: #28a745;">¡Lo lograste!</h3>
-    <p>Tu puntaje calculado es: <strong>{{ session.get('puntaje_ganado') }}</strong></p>
-    <form method="POST" action="/">
-        <input type="text" name="documento" placeholder="Documento" required>
-        <input type="text" name="nombre" placeholder="Nombre Completo" required>
-        <input type="email" name="correo" placeholder="Correo Electrónico" required>
-        <input type="text" name="programa" placeholder="Programa de formación" required>
-        <input type="text" name="ficha" placeholder="Ficha" required>
-        <button type="submit" style="background: #28a745;">Guardar en Base de Datos</button>
-    </form>
-</div>
-{% endif %}
+                <div class="form-group">
+                    <input type="text" name="nombre" required autocomplete="off">
+                    <label>Nombre del Peleador</label>
+                </div>
 
-<div class="card table-card">
-    <h3>🏆 Salón de la Fama</h3>
-    <table>
-        <tr>
-            <th>Nombre</th>
-            <th>Programa</th>
-            <th>Ficha</th>
-            <th>Puntaje</th>
-        </tr>
-        {% for j in jugadores %}
-        <tr>
-            <td>{{ j[0] }}</td>
-            <td>{{ j[2] }}</td>
-            <td>{{ j[3] }}</td>
-            <td style="font-weight: bold; color: #007bff;">{{ j[1] }}</td>
-        </tr>
-        {% else %}
-        <tr>
-            <td colspan="4" style="text-align: center;">No hay jugadores registrados aún.</td>
-        </tr>
-        {% endfor %}
-    </table>
-</div>
+                <div class="form-group">
+                    <input type="email" name="correo" required autocomplete="off">
+                    <label>Correo Electrónico</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" name="programa" required autocomplete="off">
+                    <label>Programa de Formación</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="text" name="ficha" required autocomplete="off">
+                    <label>Ficha</label>
+                </div>
+
+                <button type="submit" class="btn-gloria">Entrar al Ring</button>
+            </form>
+        </div>
+
+        <div class="video-section">
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1&mute=1&loop=1&playlist=ScMzIvxBSi4" 
+                    title="Video de Boxeo Motivacional" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+
+    </div>
 
 </body>
 </html>
