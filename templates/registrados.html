@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Estudiantes Registrados</title>
+
+<style>
+
+body{
+    margin:0;
+    padding:30px;
+    background:#000;
+    color:white;
+    font-family:'Montserrat',sans-serif;
+}
+
+h1{
+    text-align:center;
+    color:#FFD700;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th{
+    background:#FFD700;
+    color:black;
+    padding:12px;
+}
+
+td{
+    border:1px solid #444;
+    padding:10px;
+    text-align:center;
+}
+
+tr:nth-child(even){
+    background:#111;
+}
+
+tr:hover{
+    background:#222;
+}
+
+.btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:12px 20px;
+    background:#FFD700;
+    color:black;
+    text-decoration:none;
+    border-radius:5px;
+    font-weight:bold;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Estudiantes Registrados</h1>
+
+<table>
+
+    <tr>
+        <th>Documento</th>
+        <th>Nombre</th>
+        <th>Correo</th>
+        <th>Programa</th>
+        <th>Ficha</th>
+    </tr>
+
+    {% for estudiante in estudiantes %}
+
+    <tr>
+        <td>{{ estudiante[0] }}</td>
+        <td>{{ estudiante[1] }}</td>
+        <td>{{ estudiante[2] }}</td>
+        <td>{{ estudiante[3] }}</td>
+        <td>{{ estudiante[4] }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<a href="/" class="btn">
+    ⬅ Volver al Inicio
+</a>
+
+</body>
+</html>
