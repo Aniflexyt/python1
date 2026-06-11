@@ -10,6 +10,10 @@ def get_db_connection():
     return psycopg2.connect(DB_URL)
 
 
+# ----------------------------------------------------------------------
+# a) Home Page – Index, página 1
+# d) Permite el registro desde el módulo principal
+# ----------------------------------------------------------------------
 @app.route("/", methods=["GET", "POST"])
 def index():
 
@@ -58,7 +62,8 @@ def index():
             cur.close()
             conn.close()
 
-            return render_template("registro_exitoso.html")
+            # Al registrar con éxito, redirige al módulo 2 para ver los datos reflejados
+            return redirect(url_for("modulo_registro"))
 
         except OperationalError as e:
 
@@ -79,9 +84,77 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/registrados")
-def registrados():
+# ----------------------------------------------------------------------
+# b) Registro de usuario, página 2
+# c) Consulta de información, embebida en página 2
+# ----------------------------------------------------------------------
+@app.route("/modulo_registro", methods=["GET", "POST"])
+def modulo_registro():
 
+    if request.method == "POST":
+
+        documento = request.form["documento"]
+        nombre = request.form["nombre"]
+        correo = request.form["correo"]
+        programa = request.form["programa"]
+        ficha = request.form["ficha"]
+
+        if not documento.isdigit():
+            return render_template(
+                "error.html",
+                mensaje_error="Documento inválido",
+                detalle="El documento solo debe contener números."
+            )
+
+        if "@" not in correo:
+            return render_template(
+                "error.html",
+                mensaje_error="Correo inválido",
+                detalle="Ingrese un correo válido."
+            )
+
+        try:
+
+            conn = get_db_connection()
+            cur = conn.cursor()
+
+            cur.execute("""
+                INSERT INTO jugadores
+                (documento, nombre, correo, programa, ficha)
+                VALUES (%s, %s, %s, %s, %s)
+                ON CONFLICT (documento) DO NOTHING;
+            """, (
+                documento,
+                nombre,
+                correo,
+                programa,
+                ficha
+            ))
+
+            conn.commit()
+
+            cur.close()
+            conn.close()
+
+            return redirect(url_for("modulo_registro"))
+
+        except OperationalError as e:
+
+            return render_template(
+                "error.html",
+                mensaje_error="Error de conexión con la base de datos.",
+                detalle=str(e)
+            )
+
+        except Exception as e:
+
+            return render_template(
+                "error.html",
+                mensaje_error="Error inesperado.",
+                detalle=str(e)
+            )
+
+    # Lógica de Consulta de Información (c) Embebida en la misma Página 2
     try:
 
         conn = get_db_connection()
@@ -104,7 +177,7 @@ def registrados():
         conn.close()
 
         return render_template(
-            "registrados.html",
+            "modulo_registro.html",
             estudiantes=estudiantes
         )
 
@@ -135,7 +208,8 @@ def eliminar(documento):
         cur.close()
         conn.close()
 
-        return redirect(url_for("registrados"))
+        # Al eliminar, vuelve a cargar el módulo secundario de registros actualizados
+        return redirect(url_for("modulo_registro"))
 
     except Exception as e:
 
