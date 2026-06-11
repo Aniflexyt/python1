@@ -10,10 +10,7 @@ def get_db_connection():
     return psycopg2.connect(DB_URL)
 
 
-# ----------------------------------------------------------------------
-# a) Home Page – Index, página 1
-# d) Permite el registro desde el módulo principal
-# ----------------------------------------------------------------------
+
 @app.route("/", methods=["GET", "POST"])
 def index():
 
@@ -84,10 +81,6 @@ def index():
     return render_template("index.html")
 
 
-# ----------------------------------------------------------------------
-# b) Registro de usuario, página 2
-# c) Consulta de información, embebida en página 2
-# ----------------------------------------------------------------------
 @app.route("/modulo_registro", methods=["GET", "POST"])
 def modulo_registro():
 
