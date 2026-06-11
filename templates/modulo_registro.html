@@ -193,9 +193,9 @@
 
     <div class="overlay"></div>
 
-    <h1>[PÁGINA 2] MÓDULO DE GESTIÓN</h1>
+    <h1>MÓDULO DE GESTIÓN</h1>
     <div style="max-width: 1400px; margin: 0 auto;">
-        <a href="/" class="btn-volver">⬅ Volver al Módulo Principal (Página 1)</a>
+        <a href="/" class="btn-volver">Volver al Módulo Principal</a>
     </div>
 
     <div class="split-container">
@@ -213,7 +213,7 @@
         </div>
 
         <div class="section-box right-panel">
-            <h2>c) Consulta de Información Embebida</h2>
+            <h2>Consulta de Información Embebida</h2>
             
             <input type="text" id="buscador" class="search-box" onkeyup="filtrarTabla()" placeholder="🔍 Buscar peleador por nombre o documento...">
             
@@ -237,7 +237,7 @@
                         <td>{{ est[3] }}</td>
                         <td>{{ est[4] }}</td>
                         <td>
-                            <a class="btn-borrar" href="/eliminar/{{ est[0] }}" onclick="return confirm('¿Deseas dar de baja a este peleador del torneo?')">🗑 Eliminar</a>
+                            <a class="btn-borrar" href="/eliminar/{{ est[0] }}" onclick="return confirm('¿Deseas dar de baja a este peleador del torneo?')">Eliminar</a>
                         </td>
                     </tr>
                     {% endfor %}
