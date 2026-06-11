@@ -2,20 +2,20 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Torneo de Boxeo - Registro</title>
+    <title>Dashboard Arena - Módulo Principal</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;0,900&display=swap" rel="stylesheet">
 
     <style>
         body {
             margin: 0;
-            padding: 0;
+            padding: 20px;
             font-family: 'Montserrat', sans-serif;
             color: #ffffff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            box-sizing: border-box;
         }
 
         .video-bg {
@@ -34,96 +34,142 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.8);
             z-index: -1;
         }
 
         .master-container {
             display: flex;
-            flex-wrap: wrap;
-            width: 90%;
-            max-width: 1200px;
-            background: rgba(20, 20, 20, 0.6);
+            flex-direction: column;
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(15, 15, 15, 0.75);
             border: 2px solid #D4AF37;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
-            backdrop-filter: blur(5px);
-            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.25);
+            backdrop-filter: blur(8px);
+            padding: 30px;
+            box-sizing: border-box;
             z-index: 1;
         }
 
-        .form-section {
-            flex: 1;
-            min-width: 350px;
-            padding: 50px 40px;
+        /* Sección de Video Centrada Superior */
+        .video-centered-section {
+            width: 100%;
             display: flex;
-            flex-direction: column;
             justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            max-width: 800px;
+            height: 380px;
+            border: 2px solid #D4AF37;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Títulos e Información */
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
         }
 
         .header-title {
             color: #D4AF37;
-            text-shadow: 2px 2px 4px #000;
-            font-size: 2.5rem;
+            text-shadow: 2px 2px 8px #000;
+            font-size: 2.3rem;
             font-weight: 900;
-            margin: 0 0 10px 0;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .form-group {
-            position: relative;
-            margin-bottom: 25px;
+        .subtitle {
+            color: #FFDF00;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin: 8px 0 0 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
-        .form-group input {
-            width: 100%;
-            padding: 12px 10px;
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid #555;
-            color: #fff;
-            box-sizing: border-box;
+        /* Contenido del Dashboard dividido en Paneles */
+        .dashboard-content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
         }
 
-        .form-group input:focus {
-            outline: none;
-            border-bottom: 2px solid #FFDF00;
+        /* Panel Izquierdo: Control y Accesos */
+        .panel-controles {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .panel-controles h3 {
+            color: #D4AF37;
+            margin-top: 0;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 8px;
+        }
+
+        .botones-extra {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
         }
 
         .btn-gloria {
             background: linear-gradient(45deg, #B8860B, #FFDF00, #B8860B);
             color: #000;
             font-weight: 900;
-            padding: 15px;
+            padding: 16px;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: 0.5s;
-            width: 100%;
-            margin-top: 10px;
+            transition: 0.4s;
+            text-decoration: none;
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 1rem;
         }
 
         .btn-gloria:hover {
             transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(255, 223, 0, 0.8);
-        }
-
-        .botones-extra {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            box-shadow: 0 0 20px rgba(255, 223, 0, 0.7);
         }
 
         .btn-extra {
             text-decoration: none;
             text-align: center;
-            background: rgba(212, 175, 55, 0.15);
+            background: rgba(212, 175, 55, 0.1);
             border: 1px solid #D4AF37;
             color: #fff;
-            padding: 12px;
-            border-radius: 5px;
+            padding: 14px;
+            border-radius: 6px;
             font-weight: bold;
             transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 0.9rem;
         }
 
         .btn-extra:hover {
@@ -131,20 +177,66 @@
             color: #000;
         }
 
-        .video-section {
-            flex: 1;
+        /* Panel Derecho: Personajes Ficticios */
+        .panel-personajes {
+            flex: 1.5;
             min-width: 350px;
-            background: #000;
-            display: flex;
-            align-items: center;
-            border-left: 2px solid rgba(212, 175, 55, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 25px;
+            border-radius: 12px;
         }
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            min-height: 400px;
-            border: none;
+        .panel-personajes h3 {
+            color: #D4AF37;
+            margin-top: 0;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 8px;
+        }
+
+        .lista-personajes {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .card-personaje {
+            display: flex;
+            align-items: center;
+            background: rgba(25, 25, 25, 0.6);
+            border-left: 4px solid #D4AF37;
+            padding: 12px 15px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .avatar-ficticio {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #222;
+            border: 2px solid #FFDF00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: #FFDF00;
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+
+        .info-personaje h4 {
+            margin: 0;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .info-personaje p {
+            margin: 3px 0 0 0;
+            color: #aaa;
+            font-size: 0.8rem;
         }
     </style>
 </head>
@@ -159,63 +251,68 @@
 
     <div class="master-container">
 
-        <div class="form-section">
-
-            <h1 class="header-title">FIGHT NIGHT</h1>
-
-            <p style="color:#aaa;">
-             Módulo Principal - Registro rápido
-            </p>
-
-            <form action="/" method="POST">
-
-                <div class="form-group">
-                    <input type="text" name="documento" required placeholder="Documento">
-                </div>
-
-                <div class="form-group">
-                    <input type="text" name="nombre" required placeholder="Nombre del Peleador">
-                </div>
-
-                <div class="form-group">
-                    <input type="email" name="correo" required placeholder="Correo Electrónico">
-                </div>
-
-                <div class="form-group">
-                    <input type="text" name="programa" required placeholder="Programa de Formación">
-                </div>
-
-                <div class="form-group">
-                    <input type="text" name="ficha" required placeholder="Ficha">
-                </div>
-
-                <button type="submit" class="btn-gloria">
-                 Registrar desde Inicio
-                </button>
-
-            </form>
-
-            <div class="botones-extra">
-
-                <a href="https://freepacman.org/" target="_blank" class="btn-extra">
-                    Ir al Juego
-                </a>
-
-                <a href="/modulo_registro" class="btn-extra">
-                    Consultar Registrados
-                </a>
-
+        <div class="video-centered-section">
+            <div class="video-wrapper">
+                <iframe
+                    src="https://www.youtube.com/embed/i4k7_v1MTqM?autoplay=1&mute=1"
+                    title="YouTube video player"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
             </div>
-
         </div>
 
-        <div class="video-section">
-            <iframe
-                src="https://www.youtube.com/embed/i4k7_v1MTqM?autoplay=1"
-                title="YouTube video player"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen>
-            </iframe>
+        <div class="dashboard-header">
+            <h1 class="header-title">FIGHT NIGHT ARENA</h1>
+            <div class="subtitle">GRTSCH, Mon Laferte - STREETFIGHTER</div>
+        </div>
+
+        <div class="dashboard-content">
+            
+            <div class="panel-controles">
+                <h3>Navegación del Torneo</h3>
+                <div class="botones-extra">
+                    <a href="/modulo_registro" class="btn-gloria">
+                        Ir al Módulo de Gestión (Página 2)
+                    </a>
+
+                    <a href="https://freepacman.org/" target="_blank" class="btn-extra">
+                        🎮 Minijuego Pacman Arcade
+                    </a>
+                </div>
+            </div>
+
+            <div class="panel-personajes">
+                <h3>Roster Oficial de Exhibición</h3>
+                <div class="lista-personajes">
+                    
+                    <div class="card-personaje">
+                        <div class="avatar-ficticio">R</div>
+                        <div class="info-personaje">
+                            <h4>Ryu Soler</h4>
+                            <p>Estilo: Boxeo Callejero / Kickboxing | Récord: 24-2-0</p>
+                        </div>
+                    </div>
+
+                    <div class="card-personaje">
+                        <div class="avatar-ficticio">M</div>
+                        <div class="info-personaje">
+                            <h4>Mon "The Fighter" Laferte</h4>
+                            <p>Estilo: Golpe de Poder / Contragolpeadora | Récord: 18-0-1</p>
+                        </div>
+                    </div>
+
+                    <div class="card-personaje">
+                        <div class="avatar-ficticio">C</div>
+                        <div class="info-personaje">
+                            <h4>Chun-Li Mendoza</h4>
+                            <p>Estilo: Boxeo de Velocidad / Out-Boxer | Récord: 21-4-0</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
 
     </div>
