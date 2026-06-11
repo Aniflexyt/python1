@@ -177,7 +177,7 @@
             color: #000;
         }
 
-        /* Panel Derecho: Personajes Ficticios */
+        /* Panel Derecho: Personajes Ficticios con Soporte de Imagen */
         .panel-personajes {
             flex: 1.5;
             min-width: 350px;
@@ -210,33 +210,39 @@
             border-left: 4px solid #D4AF37;
             padding: 12px 15px;
             border-radius: 0 8px 8px 0;
+            transition: 0.3s;
         }
 
-        .avatar-ficticio {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #222;
+        .card-personaje:hover {
+            background: rgba(40, 40, 40, 0.8);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        /* CONTENEDOR DE IMAGEN FIJO Y ESTILIZADO */
+        .avatar-fighter-img {
+            width: 65px;
+            height: 65px;
+            border-radius: 8px; /* Diseño semi-cuadrado arcade */
             border: 2px solid #FFDF00;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            color: #FFDF00;
-            font-size: 1.2rem;
+            object-fit: cover; /* Recorta la imagen automáticamente para que no se deforme */
+            box-shadow: 0 0 10px rgba(255, 223, 0, 0.3);
             margin-right: 15px;
+            background: #222;
         }
 
         .info-personaje h4 {
             margin: 0;
             color: #fff;
             font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .info-personaje p {
-            margin: 3px 0 0 0;
+            margin: 5px 0 0 0;
             color: #aaa;
             font-size: 0.8rem;
+            line-height: 1.3;
         }
     </style>
 </head>
@@ -273,11 +279,11 @@
                 <h3>Navegación del Torneo</h3>
                 <div class="botones-extra">
                     <a href="/modulo_registro" class="btn-gloria">
-                        Ir al Módulo de Gestión (Página 2)
+                    Ir al Módulo de Gestión
                     </a>
 
                     <a href="https://freepacman.org/" target="_blank" class="btn-extra">
-                        🎮 Minijuego Pacman Arcade
+                    Minijuego Pacman Arcade
                     </a>
                 </div>
             </div>
@@ -287,26 +293,26 @@
                 <div class="lista-personajes">
                     
                     <div class="card-personaje">
-                        <div class="avatar-ficticio">R</div>
+                        <img class="avatar-fighter-img" src="https://imgs.search.brave.com/dgvRvu1QVA0Glpz6m2GklEl63DwKGxPfG-uGYLJC95M/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9ncml0/YXJhZGlvLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMjAyNi8w/My9TVFJFRVRGSUdI/VEVSLUdSVFNDSC1N/T04tTEFGRVJURS5q/cGc" alt="Ryu Soler">
                         <div class="info-personaje">
-                            <h4>Ryu Soler</h4>
-                            <p>Estilo: Boxeo Callejero / Kickboxing | Récord: 24-2-0</p>
+                            <h4>mon laferte y GRTSCH</h4>
+                            <p>Estilo: Boxeo Callejero / Kickboxing<br>Récord: 24-2-0 | Origen: Chazuta</p>
                         </div>
                     </div>
 
                     <div class="card-personaje">
-                        <div class="avatar-ficticio">M</div>
+                        <img class="avatar-fighter-img" src="https://imgs.search.brave.com/lfqPBeqdpSWC8Lh2rg3qTJb75urjPNpSTXotv8mzxis/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/c3RyZWV0ZmlnaHRl/ci5jb20vYXNzZXRz/L2ltYWdlcy9hYm91/dF9jaGFyYV8wLnBu/Zw" alt="Mon Laferte">
                         <div class="info-personaje">
-                            <h4>Mon "The Fighter" Laferte</h4>
-                            <p>Estilo: Golpe de Poder / Contragolpeadora | Récord: 18-0-1</p>
+                            <h4>Mon "The Fighter" RYU </h4>
+                            <p>Estilo: Golpe de Poder / Contragolpeadora<br>Récord: 18-0-1 | Origen: Viña del Mar</p>
                         </div>
                     </div>
 
                     <div class="card-personaje">
-                        <div class="avatar-ficticio">C</div>
+                        <img class="avatar-fighter-img" src="https://imgs.search.brave.com/QH9qdagqD2DQgzYuNIo0kH-d6BJpbTcTKHymvQ1bO8A/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/d3JpdGV1cHMub3Jn/L3dwLWNvbnRlbnQv/dXBsb2Fkcy9DaHVu/LUxpLVN0cmVldC1G/aWdodGVycy1yZXYt/YS5qcGc" alt="Chun-Li Mendoza">
                         <div class="info-personaje">
-                            <h4>Chun-Li Mendoza</h4>
-                            <p>Estilo: Boxeo de Velocidad / Out-Boxer | Récord: 21-4-0</p>
+                            <h4>Chun-Li </h4>
+                            <p>Estilo: Boxeo de Velocidad / Out-Boxer<br>Récord: 21-4-0 | Origen: Bogotá</p>
                         </div>
                     </div>
 
